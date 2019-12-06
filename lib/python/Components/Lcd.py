@@ -240,7 +240,7 @@ def standbyCounterChanged(dummy):
 		config.lcd.ledbrightnessdeepstandby.apply()
 
 def InitLcd():
-	if getBoxType() in ('vusolo'):
+	if getBoxType() in ('amikomini', 'dynaspark', 'amiko8900', 'sognorevolution', 'arguspingulux', 'arguspinguluxmini', 'arguspinguluxplus', 'sparkreloaded', 'vusolo'):
 		detected = False
 	else:
 		detected = eDBoxLCD.getInstance().detected()
