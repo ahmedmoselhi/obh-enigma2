@@ -1232,7 +1232,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		try:
 			return self.text.encode("utf-8")
 		except UnicodeDecodeError:
-			print "[Config] Broken UTF8!"
+			print "Broken UTF8!"
 			return self.text
 
 	def setValue(self, val):
@@ -1240,7 +1240,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 			self.text = val.decode("utf-8")
 		except UnicodeDecodeError:
 			self.text = val.decode("utf-8", "ignore")
-			print "[Config] Broken UTF8!"
+			print "Broken UTF8!"
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
@@ -1983,7 +1983,7 @@ class Config(ConfigSubsection):
 			f.close()
 			os.rename(filename + ".writing", filename)
 		except IOError:
-			print "[Config] Couldn't write %s" % filename
+			print "Config: Couldn't write %s" % filename
 
 	def loadFromFile(self, filename, base_file=True):
 		self.unpickle(open(filename, "r"), base_file)
@@ -2001,9 +2001,8 @@ class ConfigFile:
 	def load(self):
 		try:
 			config.loadFromFile(self.CONFIG_FILE, True)
-			print "[Config] Config file loaded ok..."
 		except IOError, e:
-			print "[Config] unable to load config (%s), assuming defaults..." % str(e)
+			print "unable to load config (%s), assuming defaults..." % str(e)
 
 	def save(self):
 		# config.save()
@@ -2025,7 +2024,7 @@ class ConfigFile:
 				ret = self.__resolveValue(names[1:], config.content.items)
 				if ret and len(ret):
 					return ret
-		print "[Config] getResolvedKey", key, "empty variable."
+		print "getResolvedKey", key, "failed !! (Typo??)"
 		return ""
 
 def NoSave(element):

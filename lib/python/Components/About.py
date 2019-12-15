@@ -114,7 +114,7 @@ def getCPUArch():
 		return "ARM V7"
 	if "ARM" in getCPUString():
 		return getCPUString()
-	return _("Mipsel")
+	return _("SH4")
 
 def getCPUString():
 	system = _("unavailable")
