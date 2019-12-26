@@ -11,8 +11,8 @@
 		<key id="KEY_END" mapto="moveEnd" flags="mr"/>
 		<key id="KEY_PAGEUP" mapto="pageUp" flags="mr"/>
 		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="mr"/>
-		<key id="KEY_LEFT" mapto="pageUp" flags="mr"/>
-		<key id="KEY_RIGHT" mapto="pageDown" flags="mr"/>
+		<key id="KEY_CHANNELUP" mapto="pageUp" flags="mr" />
+		<key id="KEY_CHANNELDOWN" mapto="pageDown" flags="mr" />
 
 		<key id="1" mapto="moveUp" flags="mr"/>
 		<key id="2" mapto="moveDown" flags="mr"/>
@@ -522,7 +522,6 @@
 		<key id="KEY_PLAYPAUSE" mapto="timeshiftStart" flags="m"/>
 		<key id="KEY_PAUSE" mapto="timeshiftStart" flags="m"/>
 		<key id="KEY_STOP" mapto="timeshiftStop" flags="m"/>
-		<key id="KEY_TIME" mapto="timeshiftStart" flags="m"/>
 		<key id="KEY_RECORD" mapto="instantRecord" flags="m"/>
 		<key id="KEY_PREVIOUS" mapto="jumpPreviousFile" flags="m"/>
 		<key id="KEY_NEXT" mapto="jumpNextFile" flags="m"/>
@@ -639,9 +638,9 @@
 		<key id="KEY_GREEN" mapto="showSatellites" flags="m"/>
 		<key id="KEY_YELLOW" mapto="showProviders" flags="m"/>
 		<key id="KEY_BLUE" mapto="showFavourites" flags="m"/>
-		<key id="KEY_FAVORITES" mapto="showFavourites" flags="m"/>		
-		<key id="KEY_CHANNELUP" mapto="nextBouquet" flags="m"/>
-		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m"/>
+		<key id="KEY_FAVORITES" mapto="showFavourites" flags="m"/>
+		<key id="KEY_RIGHT" mapto="nextBouquet" flags="m" />
+		<key id="KEY_LEFT" mapto="prevBouquet" flags="m" />
 		<key id="KEY_NEXT" mapto="nextMarker" flags="m"/>
 		<key id="KEY_BACK" mapto="prevMarker" flags="m"/>
 		<key id="KEY_PREVIOUS" mapto="prevMarker" flags="m"/>
