@@ -12,7 +12,7 @@ from Tools.Directories import fileCheck, fileExists
 from enigma import getDesktop
 from os import access, R_OK
 
-from boxbranding import getBoxType, getBrandOEM
+from boxbranding import getBoxType
 
 def getFilePath(setting):
 	return "/proc/stb/fb/dst_%s" % (setting)
@@ -71,10 +71,6 @@ def InitOsdPosition():
 		SystemInfo["OsdMenu"] = True
 	else:
 		SystemInfo["OsdMenu"] = False
-
-	if getBrandOEM() in ('fulan'):
-		SystemInfo["CanChangeOsdPosition"] = False
-		SystemInfo["CanChange3DOsd"] = False
 
 	def setOSDLeft(configElement):
 		if SystemInfo["CanChangeOsdPosition"]:
