@@ -326,6 +326,8 @@ class SecondInfoBar(Screen):
 		self["key_blue"] = Label()
 		self["SecondInfoBar"] = ActionMap(["2ndInfobarActions"],
 			{
+				"pageUp": self.pageUp,
+				"pageDown": self.pageDown,
 				"prevPage": self.pageUp,
 				"nextPage": self.pageDown,
 				"prevEvent": self.prevEvent,
@@ -1179,6 +1181,13 @@ class InfoBarChannelSelection:
 			self.serviceListType = "Norm"
 			self.servicelist.showFavourites()
 			self.session.execDialog(self.servicelist)
+
+	def volumeUp(self):
+		VolumeControl.instance and VolumeControl.instance.volUp()
+
+	def volumeDown(self):
+		VolumeControl.instance and VolumeControl.instance.volDown()
+
 
 	def ChannelMinusPressed(self):
 		if config.usage.channelbutton_mode.value == "0" or config.usage.show_second_infobar.value == "INFOBAREPG":
