@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getMachineBuild, getBoxType
+from boxbranding import getImageVersion, getMachineBuild, getBoxType, getBrandOEM
 from sys import modules
 import socket, fcntl, struct
 
@@ -110,11 +110,13 @@ def getCPUSpeedString():
 	return _("unavailable")
 
 def getCPUArch():
+	if getBrandOEM() in ('fulan'):
+		return "SH4"
 	if getBoxType() in ('osmio4k',):
 		return "ARM V7"
 	if "ARM" in getCPUString():
 		return getCPUString()
-	return _("SH4")
+	return _("Mipsel")
 
 def getCPUString():
 	system = _("unavailable")
