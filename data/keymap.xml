@@ -304,7 +304,8 @@
 	</map>
 
 	<map context="InfobarSubtitleSelectionActions">
-		<key id="KEY_SUBTITLE" mapto="subtitleSelection" flags="m"/>
+		<key id="KEY_SUBTITLE" mapto="subtitleSelection" flags="b"/>
+		<key id="KEY_SUBTITLE" mapto="toggleDefaultSubtitles" flags="l"/>
 	</map>
 
 	<map context="InfobarSubserviceSelectionActions">
@@ -675,6 +676,8 @@
 	<map context="TimerEditActions">
 		<key id="KEY_INFO" mapto="log" flags="m"/>
 		<key id="KEY_I" mapto="log" flags="m"/>
+		<key id="KEY_CHANNELUP" mapto="moveTop" flags="m"/>
+		<key id="KEY_CHANNELDOWN" mapto="moveEnd" flags="m"/>
 	</map>
 
 	<map context="EPGSelectActions">
@@ -935,7 +938,7 @@
 			<key id="KEY_NEXTSONG" mapto="next" flags="m"/>
 		</device-->
 	</map>
-	
+
 	<map context="ButtonSetupActions">
 		<key id="KEY_RED" mapto="red" flags="b"/>
 		<key id="KEY_RED" mapto="red_long" flags="l"/>
@@ -954,6 +957,7 @@
 		<key id="KEY_HELP" mapto="displayHelp" flags="b"/>
 		<key id="KEY_HELP" mapto="displayHelp_long" flags="l"/>
 		<key id="KEY_SUBTITLE" mapto="subtitle" flags="b"/>
+		<key id="KEY_SUBTITLE" mapto="subtitle_long" flags="l"/>
 		<key id="KEY_MENU" mapto="mainMenu" flags="b"/>
 		<key id="KEY_INFO" mapto="info" flags="b"/>
 		<key id="KEY_INFO" mapto="info_long" flags="l"/>
@@ -983,6 +987,7 @@
 		<key id="KEY_PREVIOUSSONG" mapto="rewind" flags="b"/>
 		<key id="KEY_NEXTSONG" mapto="fastforward" flags="b"/>
 		<key id="KEY_SCREEN" mapto="activatePiP" flags="b"/>
+		<key id="KEY_SCREEN" mapto="activatePiP_long" flags="l"/>
 		<key id="KEY_PROGRAM" mapto="timer" flags="b"/>
 		<key id="KEY_PLAYPAUSE" mapto="playpause" flags="m"/>
 		<key id="KEY_LIST" mapto="playlist" flags="b"/>
@@ -1021,5 +1026,7 @@
 		<key id="KEY_RECALL" mapto="recall" flags="m"/>
 		<key id="KEY_AUX" mapto="HDMIin" flags="b"/>
 		<key id="KEY_AUX" mapto="HDMIin_long" flags="l"/>
-	</map>
+		<key id="KEY_FILE" mapto="file" flags="b"/>
+		<key id="KEY_FILE" mapto="file_long" flags="l"/>
+</map>
 </keymap>

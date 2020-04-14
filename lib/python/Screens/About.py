@@ -1,25 +1,25 @@
-from Screen import Screen
-from Screens.SoftwareUpdate import UpdatePlugin
-from Screens.GitCommitInfo import CommitInfo
-from Components.ActionMap import ActionMap
-from Components.Button import Button
-from Components.Sources.StaticText import StaticText
-from Components.Harddisk import harddiskmanager
-from Components.NimManager import nimmanager
-from Components.About import about
-from Components.ScrollLabel import ScrollLabel
-from Components.Console import Console
-from Components.config import config
+from os import listdir, path
+from re import search
 from enigma import eTimer, getEnigmaVersionString, getDesktop
 from boxbranding import getMachineBrand, getMachineBuild, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
-from Components.Pixmap import MultiPixmap
+from Components.About import about
+from Components.ActionMap import ActionMap
+from Components.Button import Button
+from Components.config import config
+from Components.Console import Console
+from Components.Harddisk import harddiskmanager
 from Components.Network import iNetwork
+from Components.NimManager import nimmanager
+from Components.Pixmap import MultiPixmap
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Tools.StbHardware import getFPVersion
-from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Screen import Screen
+from Screens.GitCommitInfo import CommitInfo
+from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
-from os import path
-from re import search
+from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Tools.StbHardware import getFPVersion
 import skin
 
 class About(Screen):
@@ -88,26 +88,23 @@ class About(Screen):
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
 		if SystemInfo["HasH9SD"]:
-			f = open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read()
-			if "rootfstype=ext4" in f:
+			if "rootfstype=ext4" in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read():
 				part = "        - SD card in use for Image root \n" 
 			else:
 				part = "        - eMMC slot in use for Image root \n"
 			AboutText += _("%s") % part
 
-
 		if SystemInfo["canMultiBoot"]:
-			slot = image = GetCurrentImage()
+			slot = image= GetCurrentImage()
 			part = "eMMC slot %s" %slot
 			bootmode = ""
 			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" %GetCurrentImageMode()
-			if SystemInfo["HasSDmmc"]:
-				slot += 1
-				if image != 0:
-					part = "SDC slot %s (%s%s) " %(image, SystemInfo["canMultiBoot"][2], image*2)
-				else:
-					part = "eMMC slot %s" %slot
+				bootmode = "bootmode = %s" %GetCurrentImageMode()		
+			print "[About] HasHiSi = %s, slot = %s" %(SystemInfo["HasHiSi"], slot)
+			if SystemInfo["HasHiSi"]:
+				if slot != 1:
+					image =-1
+					part = "SDcard slot %s (%s) " %(image, SystemInfo["canMultiBoot"][slot]['device'])
 			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
 
 		skinWidth = getDesktop(0).size().width()
@@ -129,32 +126,27 @@ class About(Screen):
 
 		tempinfo = ""
 		if path.exists('/proc/stb/sensors/temp0/value'):
-			f = open('/proc/stb/sensors/temp0/value', 'r')
-			tempinfo = f.read()
-			f.close()
+			with open('/proc/stb/sensors/temp0/value', 'r') as f:
+				tempinfo = f.read()
 		elif path.exists('/proc/stb/fp/temp_sensor'):
-			f = open('/proc/stb/fp/temp_sensor', 'r')
-			tempinfo = f.read()
-			f.close()
+			with open('/proc/stb/fp/temp_sensor', 'r') as f:
+				tempinfo = f.read()
 		elif path.exists('/proc/stb/sensors/temp/value'):
-			f = open('/proc/stb/sensors/temp/value', 'r')
-			tempinfo = f.read()
-			f.close()
+			with open('/proc/stb/sensors/temp/value', 'r') as f:
+				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
 			mark = str('\xc2\xb0')
 			AboutText += _("System temp:\t%s") % tempinfo.replace('\n', '').replace(' ','') + mark + "C\n"
 
 		tempinfo = ""
 		if path.exists('/proc/stb/fp/temp_sensor_avs'):
-			f = open('/proc/stb/fp/temp_sensor_avs', 'r')
-			tempinfo = f.read()
-			f.close()
+			with open('/proc/stb/fp/temp_sensor_avs', 'r') as f:
+				tempinfo = f.read()
 		elif path.exists('/sys/devices/virtual/thermal/thermal_zone0/temp'):
 			try:
-				f = open('/sys/devices/virtual/thermal/thermal_zone0/temp', 'r')
-				tempinfo = f.read()
-				tempinfo = tempinfo[:-4]
-				f.close()
+				with open('/sys/devices/virtual/thermal/thermal_zone0/temp', 'r') as f:
+					tempinfo = f.read()
+					tempinfo = tempinfo[:-4]
 			except:
 				tempinfo = ""
 		elif path.exists('/proc/hisi/msp/pm_cpu'):
@@ -186,18 +178,17 @@ class About(Screen):
 	def dualBoot(self):
 		rootfs2 = False
 		kernel2 = False
-		f = open("/proc/mtd")
-		self.dualbootL = f.readlines()
-		for x in self.dualbootL:
-			if 'rootfs2' in x:
-				rootfs2 = True
-			if 'kernel2' in x:
-				kernel2 = True
-		f.close()
-		if rootfs2 and kernel2:
-			return True
-		else:
-			return False
+		with open("/proc/mtd") as f:
+			self.dualbootL = f.readlines()
+			for x in self.dualbootL:
+				if 'rootfs2' in x:
+					rootfs2 = True
+				if 'kernel2' in x:
+					kernel2 = True
+			if rootfs2 and kernel2:
+				return True
+			else:
+				return False
 
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo, self.menu_path)
@@ -310,7 +301,7 @@ class Devices(Screen):
 				if "ATA" in hddp:
 					hddp = hddp.replace('ATA', '')
 					hddp = hddp.replace('Internal', 'ATA Bus ')
-				free = hdd.free()
+				free = hdd.Totalfree()
 				if ((float(free) / 1024) / 1024) >= 1:
 					freeline = _("Free: ") + str(round(((float(free) / 1024) / 1024), 2)) + _("TB")
 				elif (free / 1024) >= 1:
@@ -321,7 +312,7 @@ class Devices(Screen):
 					continue
 				else:
 					freeline = _("Free: ") + _("full")
-				line = "%s      %s" %(hddp, freeline)  
+				line = "%s      %s" %(hddp, freeline)
 				self.list.append(line)
 		self.list = '\n'.join(self.list)
 		self["hdd"].setText(self.list)
@@ -341,7 +332,10 @@ class Devices(Screen):
 				if self.mountinfo:
 					self.mountinfo += "\n"
 				self.mountinfo += "%s (%sB, %sB %s)" % (ipaddress, mounttotal, mountfree, _("free"))
-
+		if pathExists("/media/autofs"):
+			for entry in sorted(listdir("/media/autofs")):
+				mountEntry = path.join("/media/autofs", entry)
+				self.mountinfo += _("\n %s is also enabled for autofs network mount" % (mountEntry))
 		if self.mountinfo:
 			self["mounts"].setText(self.mountinfo)
 		else:
@@ -725,9 +719,14 @@ class AboutSummary(Screen):
 
 		tempinfo = ""
 		if path.exists('/proc/stb/sensors/temp0/value'):
-			tempinfo = open('/proc/stb/sensors/temp0/value', 'r').read()
+			with open('/proc/stb/sensors/temp0/value', 'r') as f:
+				tempinfo = f.read()
 		elif path.exists('/proc/stb/fp/temp_sensor'):
-			tempinfo = open('/proc/stb/fp/temp_sensor', 'r').read()
+			with open('/proc/stb/fp/temp_sensor', 'r') as f:
+				tempinfo = f.read()
+		elif path.exists('/proc/stb/sensors/temp/value'):
+			with open('/proc/stb/sensors/temp/value', 'r') as f:
+				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace('\n', '')) > 0:
 			mark = str('\xc2\xb0')
 			AboutText += _("System temperature: %s") % tempinfo.replace('\n', '') + mark + "C\n\n"

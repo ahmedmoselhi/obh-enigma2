@@ -48,9 +48,12 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Help"), "displayHelp", ""),
 	(_("Help long"), "displayHelp_long", ""),
 	(_("Subtitle"), "subtitle", ""),
+	(_("Subtitle Long"), "subtitle_long", ""),
 	(_("Menu"), "mainMenu", ""),
 	(_("List/Fav/PVR"), "list", ""),
 	(_("List/Fav/PVR") + " " + _("long"), "list_long", ""),
+	(_("List/File"), "file", ""),
+	(_("List/File") + " " + _("long"), "file_long", ""),
 	(_("Back/Recall"), "back", ""),
 	(_("Back/Recall") + " " + _("long"), "back_long", ""),
 	(_("Home"), "home", ""),
@@ -67,6 +70,7 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Skip back"), "skip_back", ""),
 	(_("Skip forward"), "skip_forward", ""),
 	(_("activatePiP"), "activatePiP", ""),
+	(_("activatePiP long"), "activatePiP_long", ""),
 	(_("Timer"), "timer", ""),
 	(_("Playlist"), "playlist", ""),
 	(_("Timeshift"), "timeshift", ""),
@@ -143,6 +147,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show service list"), "Infobar/openServiceList", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show service list or movies"), "Infobar/showServiceListOrMovies", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show movies"), "Infobar/showMovies", "InfoBar"))
+	ButtonSetupFunctions.append((_("Restart last movie"), "Infobar/restartLastMovie", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openFavouritesList", "InfoBar"))
 	ButtonSetupFunctions.append((_("History back"), "Infobar/historyBack", "InfoBar"))
 	ButtonSetupFunctions.append((_("History next"), "Infobar/historyNext", "InfoBar"))
@@ -152,6 +157,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show multi EPG"), "Infobar/openMultiServiceEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Show select audio track"), "Infobar/audioSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show subtitle selection"), "Infobar/subtitleSelection", "InfoBar"))
+	ButtonSetupFunctions.append((_("Toggle default subtitles"), "Infobar/toggleDefaultSubtitles", "InfoBar"))
 	ButtonSetupFunctions.append((_("Switch to radio mode"), "Infobar/showRadio", "InfoBar"))
 	ButtonSetupFunctions.append((_("Switch to TV mode"), "Infobar/showTv", "InfoBar"))
 	ButtonSetupFunctions.append((_("Toggle between TV and Radio mode"), "Infobar/toogleTvRadio", "InfoBar"))
@@ -509,7 +515,7 @@ class InfoBarButtonSetup():
 				pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
 				pluginlist.sort(key=lambda p: p.name)
 				for plugin in pluginlist:
-					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.__call__.func_code.co_varnames:	
+					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.__call__.func_code.co_varnames:
 						if twinPaths.has_key(plugin.path[plugin.path.rfind("Plugins"):]):
 							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 						else:
@@ -544,8 +550,10 @@ class InfoBarButtonSetup():
 				try:
 					exec "from " + selected[1] + " import *"
 					exec "self.session.open(" + ",".join(selected[2:]) + ")"
-				except:
-					print "[ButtonSetup] error during executing module %s, screen %s" % (selected[1], selected[2])
+				except Exception as e:
+					print "[ButtonSetup] error during executing module %s, screen %s, %s" % (selected[1], selected[2], e)
+					import traceback
+					traceback.print_exc()
 			elif selected[0] == "Setup":
 				exec "from Screens.Setup import *"
 				exec "self.session.open(Setup, \"" + selected[1] + "\")"
