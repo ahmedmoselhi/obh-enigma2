@@ -10,7 +10,7 @@
 #define LCD_CONTRAST_MAX 63
 #define LCD_BRIGHTNESS_MIN 0
 #define LCD_BRIGHTNESS_MAX 255
-
+	
 enum op { LED_BRIGHTNESS = 0, LED_DEEPSTANDBY, LED_BLINKINGTIME };
 
 #define LED_IOCTL_BRIGHTNESS_NORMAL 0X10
@@ -42,6 +42,7 @@ public:
 	virtual bool detected() { return lcdfd >= 0; };
 	virtual int setLCDContrast(int contrast)=0;
 	virtual int setLCDBrightness(int brightness)=0;
+	virtual int setLED(int value, int option)=0;
 	virtual void setInverted( unsigned char )=0;
 	virtual void setFlipped(bool)=0;
 	virtual void dumpLCD(bool png=true)=0;
@@ -56,7 +57,7 @@ public:
 	int stride() { return _stride; };
 	virtual eSize size() { return res; };
 	virtual void update()=0;
-#ifdef HAVE_TEXTLCD
+#if defined(HAVE_TEXTLCD) || defined(HAVE_7SEGMENT)
 	virtual void renderText(ePoint start, const char *text);
 #endif
 #endif
