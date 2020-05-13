@@ -46,16 +46,16 @@ SystemInfo["LEDButtons"] = getBoxType() == 'vuultimo'
 SystemInfo["DeepstandbySupport"] = HardwareInfo().has_deepstandby()
 SystemInfo["Fan"] = fileCheck("/proc/stb/fp/fan")
 SystemInfo["FanPWM"] = SystemInfo["Fan"] and fileCheck("/proc/stb/fp/fan_pwm")
-SystemInfo["PowerLED"] = False
-SystemInfo["PowerLED2"] = False
-SystemInfo["StandbyLED"] = False
-SystemInfo["SuspendLED"] = False
-SystemInfo["LedPowerColor"] = False
-SystemInfo["LedStandbyColor"] = False
-SystemInfo["LedSuspendColor"] = False
-SystemInfo["Power24x7On"] = False
-SystemInfo["Power24x7Standby"] = False
-SystemInfo["Power24x7Suspend"] = False
+SystemInfo["PowerLED"] = fileExists("/proc/stb/power/powerled")
+SystemInfo["PowerLED2"] = fileExists("/proc/stb/power/powerled2")
+SystemInfo["StandbyLED"] = fileExists("/proc/stb/power/standbyled")
+SystemInfo["SuspendLED"] = fileExists("/proc/stb/power/suspendled")
+SystemInfo["LedPowerColor"] = fileExists("/proc/stb/fp/ledpowercolor")
+SystemInfo["LedStandbyColor"] = fileExists("/proc/stb/fp/ledstandbycolor")
+SystemInfo["LedSuspendColor"] = fileExists("/proc/stb/fp/ledsuspendledcolor")
+SystemInfo["Power24x7On"] = fileExists("/proc/stb/fp/power4x7on")
+SystemInfo["Power24x7Standby"] = fileExists("/proc/stb/fp/power4x7standby")
+SystemInfo["Power24x7Suspend"] = fileExists("/proc/stb/fp/power4x7suspend")
 SystemInfo["WakeOnLAN"] = fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
 SystemInfo["HDMICEC"] = (fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")) and fileExists("/usr/lib/enigma2/python/Plugins/SystemPlugins/HdmiCEC/plugin.pyo")
 SystemInfo["HasExternalPIP"] = fileCheck("/proc/stb/vmpeg/1/external")
@@ -139,3 +139,4 @@ SystemInfo["VideoModes"] = getChipSetString() in ( # 2160p and 1080p capable har
 		["720p", "1080i", "576p", "576i", "480p", "480i"], # normal modes
 		{"720p", "1080i"} # widescreen modes
 	)
+SystemInfo["LnbPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuultimo4k", "vuuno4k", "vuuno4kse")
