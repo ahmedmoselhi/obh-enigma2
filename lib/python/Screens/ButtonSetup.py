@@ -198,6 +198,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Plugin browser"), "Module/Screens.PluginBrowser/PluginBrowser", "Setup"))
 	ButtonSetupFunctions.append((_("Channel info"), "Module/Screens.ServiceInfo/ServiceInfo", "Setup"))
 	ButtonSetupFunctions.append((_("Timers"), "Module/Screens.TimerEdit/TimerEditList", "Setup"))
+	ButtonSetupFunctions.append((_("PowerTimer"), "Module/Screens.PowerTimerEdit/PowerTimerEditList", "Setup"))
 	ButtonSetupFunctions.append((_("Autotimer overview"), "Infobar/showAutoTimerList", "Setup"))
 	for plugin in plugins.getPluginsForMenu("system"):
 		if plugin[2]:
