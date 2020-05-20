@@ -120,7 +120,7 @@ SystemInfo["HasScaler_sharpness"] = pathExists("/proc/stb/vmpeg/0/pep_scaler_sha
 # Machines that do have SCART component video (red, green and blue RCA sockets).
 SystemInfo["Scart-YPbPr"] = getBrandOEM() == "vuplus" and not "4k" in getBoxType()
 # Machines that do not have component video (red, green and blue RCA sockets).
-SystemInfo["no_YPbPr"] = getHaveYUV() in ("False",)
+SystemInfo["no_YPbPr"] = not getHaveYUV()
 # Machines that have composite video (yellow RCA socket) but do not have Scart.
 SystemInfo["yellow_RCA_no_scart"] = getHaveSCART() in ('False',) and (getHaveRCA() in ('True',) or getHaveAVJACK() in ('True',))
 # Machines that have neither yellow RCA nor Scart sockets
