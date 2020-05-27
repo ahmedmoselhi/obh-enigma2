@@ -1,27 +1,27 @@
 /*
   NOTE: you have two options when adding classes so that
   they are callable *from* python.
-  
+
    - either you %include the header file
    - or you re-declare it
-   
+
   In both cases, you must #include the required
   header file (i.e. the header file itself), otherwise
   enigma_python_wrap.cxx won't build.
-  
+
 	In case you import the whole header file,
 	please make sure that no unimportant stuff
 	is wrapped, as this makes the wrapper stuff
-	much more complex and it can probably break 
+	much more complex and it can probably break
 	very easily because of missing typemaps etc.
-	
+
 	you could make use of dizzy macros to ensure
 	that some stuff is left out when parsed as SWIG
-	definitions, but be sure to not modify the binary 
+	definitions, but be sure to not modify the binary
 	representation. DON'T USE #ifdef SWIG_COMPILE
 	for leaving out stuff (unless you *really* know
 	what you are doing,of course!). you WILL break it.
-		
+
 	The better way (with more work) is to re-declare
 	the class. It won't be compiled, so you can
 	leave out stuff as you like.
@@ -29,7 +29,7 @@
 
 
 Oh, things like "operator= is private in this context" etc.
-is usually caused by not marking PSignals as immutable. 
+is usually caused by not marking PSignals as immutable.
 */
 
 %module enigma
@@ -112,6 +112,7 @@ is usually caused by not marking PSignals as immutable.
 #include <lib/python/python.h>
 #include <lib/python/python_helpers.h>
 #include <lib/gdi/picload.h>
+#include <lib/driver/vfd.h>
 %}
 
 %feature("ref")   iObject "$this->AddRef(); /* eDebug(\"AddRef (%s:%d)!\", __FILE__, __LINE__); */ "
@@ -200,7 +201,6 @@ typedef long time_t;
 %include <lib/gdi/fb.h>
 %include <lib/gdi/font.h>
 %include <lib/gdi/gpixmap.h>
-%include <lib/gdi/gfbdc.h>
 %include <lib/gdi/gmaindc.h>
 %include <lib/gdi/epoint.h>
 %include <lib/gdi/erect.h>
@@ -259,6 +259,7 @@ typedef long time_t;
 %include <lib/python/pythonconfig.h>
 %include <lib/gdi/picload.h>
 %include <lib/dvb/streamserver.h>
+%include <lib/driver/vfd.h>
 /**************  eptr  **************/
 
 /**************  signals  **************/
@@ -318,7 +319,7 @@ public:
 
 %{
 RESULT SwigFromPython(ePtr<gPixmap> &result, PyObject *obj)
-{	
+{
 	ePtr<gPixmap> *res;
 
 	res = 0;
@@ -418,9 +419,9 @@ int getLinkedSlotID(int);
 %{
 int getLinkedSlotID(int fe)
 {
-	eFBCTunerManager *mgr = eFBCTunerManager::getInstance();
-	if (mgr) return mgr->getLinkedSlotID(fe);
-	return -1;
+        eFBCTunerManager *mgr = eFBCTunerManager::getInstance();
+        if (mgr) return mgr->getLinkedSlotID(fe);
+        return -1;
 }
 %}
 
@@ -446,14 +447,10 @@ extern eApplication *getApplication();
 extern int getPrevAsciiCode();
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
 extern const char *getEnigmaVersionString();
-extern const char *getGStreamerVersionString();
+extern const char *getBoxType();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
-#ifndef HAVE_OSDANIMATION
-extern void setAnimation_current(int a);
-extern void setAnimation_speed(int speed);
-#endif
 %}
 
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
@@ -462,14 +459,10 @@ extern void runMainloop();
 extern void quitMainloop(int exit_code);
 extern eApplication *getApplication();
 extern const char *getEnigmaVersionString();
-extern const char *getGStreamerVersionString();
+extern const char *getBoxType();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
-#ifndef HAVE_OSDANIMATION
-extern void setAnimation_current(int a);
-extern void setAnimation_speed(int speed);
-#endif
 
 %include <lib/python/python_console.i>
 %include <lib/python/python_base.i>
