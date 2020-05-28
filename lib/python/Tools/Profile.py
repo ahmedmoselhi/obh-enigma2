@@ -1,8 +1,7 @@
 # the implementation here is a bit crappy.
 from boxbranding import getBoxType, getMachineBuild
-import os, time
+import time
 from Directories import resolveFilename, SCOPE_CONFIG
-from enigma import evfd
 
 PERCENTAGE_START = 0
 PERCENTAGE_END = 100
