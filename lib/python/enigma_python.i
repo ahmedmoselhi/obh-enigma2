@@ -25,9 +25,6 @@
 	The better way (with more work) is to re-declare
 	the class. It won't be compiled, so you can
 	leave out stuff as you like.
-
-
-
 Oh, things like "operator= is private in this context" etc.
 is usually caused by not marking PSignals as immutable. 
 */
@@ -128,7 +125,6 @@ is usually caused by not marking PSignals as immutable.
  %typemap(argout,fragment="t_out_helper"{Type}) Type *OUTPUT, Type &OUTPUT
    "$result = t_output_helper($result, (SWIG_NewPointerObj((void*)($1), $1_descriptor, 1)));"
 %enddef
-
 %define %typemap_output_ptr(Type)
  %typemap(in,numinputs=0) Type *OUTPUT ($*1_ltype temp),
               Type &OUTPUT ($*1_ltype temp)
@@ -139,8 +135,6 @@ is usually caused by not marking PSignals as immutable.
 		// generate None if smartpointer is NULL
    "$result = t_output_helper($result, ((*$1) ? SWIG_NewPointerObj((void*)($1), $1_descriptor, 1) : (delete $1, Py_INCREF(Py_None), Py_None)));"
 %enddef
-
-
 #define DEBUG
 typedef long time_t;
 %include "typemaps.i"
@@ -150,12 +144,10 @@ typedef long time_t;
 %include <lib/base/object.h>
 %include <lib/base/eenv.h>
 %include <lib/base/eerror.h>
-
 %include <lib/python/python_dvb.i>
 %include <lib/python/python_service.i>
 %include <lib/python/python_pmt.i>
 %include <lib/python/python_pcore.i>
-
 %immutable eSocketNotifier::activated;
 %include <lib/base/ebase.h>
 %include <lib/base/smartptr.h>
@@ -164,7 +156,6 @@ typedef long time_t;
 %include <lib/service/service.h>
 %include <lib/base/e2avahi.h>
 %include <lib/service/servicepeer.h>
-
 // TODO: embed these...
 %immutable ePicLoad::PictureData;
 %immutable eButton::selected;
@@ -260,67 +251,50 @@ typedef long time_t;
 %include <lib/gdi/picload.h>
 %include <lib/dvb/streamserver.h>
 /**************  eptr  **************/
-
 /**************  signals  **************/
-
 template<class R> class PSignal0
 {
 public:
 	PyObject *get();
 };
-
 %template(PSignal0V) PSignal0<void>;
-
 %typemap(out) PSignal0V {
 	$1 = $input->get();
 }
-
 template<class R, class P0> class PSignal1
 {
 public:
 	PyObject *get();
 };
-
 %template(PSignal1VI) PSignal1<void,int>;
 %template(PSignal1VS) PSignal1<void,const char *c>;
-
 %typemap(out) PSignal1VI {
 	$1 = $input->get();
 }
-
 %typemap(out) PSignal1VS {
 	$1 = $input->get();
 }
-
 %template(PSignal1VoidICECMessage) PSignal1<void,ePtr<iCECMessage>&>;
-
 %typemap(out) PSignal1VoidICECMessage {
 	$1 = $input->get();
 }
-
 template<class R, class P0, class P1> class PSignal2
 {
 public:
 	PyObject *get();
 };
-
 %template(PSignal2VoidIRecordableServiceInt) PSignal2<void,ePtr<iRecordableService>&,int>;
-
 %typemap(out) PSignal2VoidIRecordableServiceInt {
 	$1 = $input->get();
 }
-
 %template(PSignal2VII) PSignal2<void,int,int>;
-
 %typemap(out) PSignal2VII {
 	$1 = $input->get();
 }
-
 %{
 RESULT SwigFromPython(ePtr<gPixmap> &result, PyObject *obj)
 {	
 	ePtr<gPixmap> *res;
-
 	res = 0;
 	result = 0;
 #ifndef SWIGTYPE_p_ePtrT_gPixmap_t
@@ -355,9 +329,7 @@ PyObject *New_iCECMessagePtr(const ePtr<iCECMessage> &ptr)
     return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_ePtrT_iCECMessage_t, 1);
 }
 %}
-
 /* needed for service groups */
-
 PyObject *getBestPlayableServiceReference(const eServiceReference &bouquet_ref, const eServiceReference &ignore, bool simulate=false);
 %{
 PyObject *getBestPlayableServiceReference(const eServiceReference &bouquet_ref, const eServiceReference &ignore, bool simulate=false)
@@ -369,7 +341,6 @@ PyObject *getBestPlayableServiceReference(const eServiceReference &bouquet_ref, 
 	return Py_None;
 }
 %}
-
 void setTunerTypePriorityOrder(int);
 %{
 void setTunerTypePriorityOrder(int order)
@@ -377,7 +348,6 @@ void setTunerTypePriorityOrder(int order)
 	eDVBFrontend::setTypePriorityOrder(order);
 }
 %}
-
 void setPreferredTuner(int);
 %{
 void setPreferredTuner(int index)
@@ -385,7 +355,6 @@ void setPreferredTuner(int index)
 	eDVBFrontend::setPreferredFrontend(index);
 }
 %}
-
 void setSpinnerOnOff(int);
 %{
 void setSpinnerOnOff(int onoff)
@@ -394,7 +363,6 @@ void setSpinnerOnOff(int onoff)
 	if (rc) rc->setSpinnerOnOff(onoff);
 }
 %}
-
 void setEnableTtCachingOnOff(int);
 %{
 void setEnableTtCachingOnOff(int onoff)
@@ -403,7 +371,6 @@ void setEnableTtCachingOnOff(int onoff)
 	if (tt) tt->setEnableTtCachingOnOff(onoff);
 }
 %}
-
 int getUsedEncoderCount();
 %{
 int getUsedEncoderCount()
@@ -413,7 +380,6 @@ int getUsedEncoderCount()
 	return 0;
 }
 %}
-
 int getLinkedSlotID(int);
 %{
 int getLinkedSlotID(int fe)
@@ -423,7 +389,6 @@ int getLinkedSlotID(int fe)
 	return -1;
 }
 %}
-
 PyObject *getFontFaces();
 %{
 PyObject *getFontFaces()
@@ -435,9 +400,7 @@ PyObject *getFontFaces()
         return result;
 }
 %}
-
 /************** temp *****************/
-
 	/* need a better place for this, i agree. */
 %{
 extern void runMainloop();
@@ -446,22 +409,28 @@ extern eApplication *getApplication();
 extern int getPrevAsciiCode();
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
 extern const char *getEnigmaVersionString();
-extern const char *getBoxType();
+extern const char *getGStreamerVersionString();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
+#ifndef HAVE_OSDANIMATION
+extern void setAnimation_current(int a);
+extern void setAnimation_speed(int speed);
+#endif
 %}
-
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
 extern int getPrevAsciiCode();
 extern void runMainloop();
 extern void quitMainloop(int exit_code);
 extern eApplication *getApplication();
 extern const char *getEnigmaVersionString();
-extern const char *getBoxType();
+extern const char *getGStreamerVersionString();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
-
+#ifndef HAVE_OSDANIMATION
+extern void setAnimation_current(int a);
+extern void setAnimation_speed(int speed);
+#endif
 %include <lib/python/python_console.i>
 %include <lib/python/python_base.i>
