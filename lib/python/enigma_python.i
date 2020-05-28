@@ -446,14 +446,10 @@ extern eApplication *getApplication();
 extern int getPrevAsciiCode();
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
 extern const char *getEnigmaVersionString();
-extern const char *getGStreamerVersionString();
+extern const char *getBoxType();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
-#ifndef HAVE_OSDANIMATION
-extern void setAnimation_current(int a);
-extern void setAnimation_speed(int speed);
-#endif
 %}
 
 extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
@@ -462,14 +458,10 @@ extern void runMainloop();
 extern void quitMainloop(int exit_code);
 extern eApplication *getApplication();
 extern const char *getEnigmaVersionString();
-extern const char *getGStreamerVersionString();
+extern const char *getBoxType();
 extern void dump_malloc_stats(void);
 extern void pauseInit(void);
 extern void resumeInit(void);
-#ifndef HAVE_OSDANIMATION
-extern void setAnimation_current(int a);
-extern void setAnimation_speed(int speed);
-#endif
 
 %include <lib/python/python_console.i>
 %include <lib/python/python_base.i>
